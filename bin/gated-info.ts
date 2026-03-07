@@ -98,11 +98,19 @@ async function cmdAuth() {
     saveConfig(config);
     ok('Config updated');
 
+    // Auto-scan
+    info('Scanning sources...');
+    try {
+      const structure = await scan();
+      ok(`Found ${structure.docs.length} documents`);
+    } catch (e: any) {
+      warn(`Scan: ${e.message} (you can re-run: gated-info scan)`);
+    }
+
     console.log(`\n${BOLD}Next steps:${NC}`);
     console.log(`  1. Share your Google Drive folder with: ${CYAN}${email}${NC}`);
     console.log(`     (Right-click folder → Share → paste the email → Viewer)`);
-    console.log(`  2. Run: ${CYAN}gated-info scan${NC}`);
-    console.log(`  3. Restart Claude Code to pick up the MCP server`);
+    console.log(`  2. Restart Claude Code to pick up the MCP server`);
 
   } else if (source === 'notion') {
     const tokenFlag = args.indexOf('--token');
@@ -127,7 +135,7 @@ async function cmdAuth() {
     saveConfig(config);
     ok('Config updated');
 
-    console.log(`\nNext: ${CYAN}gated-info scan${NC}`);
+    await autoScan();
 
   } else if (source === 'slack') {
     const tokenFlag = args.indexOf('--token');
@@ -153,7 +161,7 @@ async function cmdAuth() {
     saveConfig(config);
     ok('Config updated');
 
-    console.log(`\nNext: ${CYAN}gated-info scan${NC}`);
+    await autoScan();
 
   } else if (source === 'telegram') {
     info('Telegram Client API auth (full access to your chats)');
@@ -197,10 +205,24 @@ async function cmdAuth() {
     saveConfig(config);
     ok('Config updated');
 
-    console.log(`\nNext: ${CYAN}gated-info scan${NC}`);
+    await autoScan();
 
   } else {
     fail('Usage: gated-info auth <google|notion|slack|telegram> [options]');
+  }
+}
+
+// ── auto-scan helper ────────────────────────────────────
+
+async function autoScan() {
+  info('Scanning sources...');
+  try {
+    const structure = await scan();
+    ok(`Found ${structure.docs.length} documents`);
+    console.log(`\nRestart Claude Code to pick up the changes.`);
+  } catch (e: any) {
+    warn(`Scan failed: ${e.message}`);
+    console.log(`You can retry: ${CYAN}gated-info scan${NC}`);
   }
 }
 

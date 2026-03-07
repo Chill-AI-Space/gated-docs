@@ -8,14 +8,21 @@ import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js'
 import { z } from 'zod';
 import { loadConfig, loadStructure, isStructureStale } from '../config.ts';
 import { generateDescription, generateReadDescription } from '../description.ts';
+import { scan } from '../scanner.ts';
 import type { SourceType } from '../types.ts';
 
 const config = loadConfig();
-const structure = loadStructure();
+let structure = loadStructure();
 
-// If structure is stale, log a hint
-if (isStructureStale(config)) {
-  process.stderr.write('[gated-info] Structure is stale. Run: gated-info scan\n');
+// Auto-scan if structure is missing or stale
+if (!structure || isStructureStale(config)) {
+  process.stderr.write('[gated-info] Structure stale or missing, scanning...\n');
+  try {
+    structure = await scan();
+    process.stderr.write(`[gated-info] Auto-scan complete: ${structure.docs.length} docs\n`);
+  } catch (e: any) {
+    process.stderr.write(`[gated-info] Auto-scan failed: ${e.message}\n`);
+  }
 }
 
 // Build dynamic descriptions from current structure
