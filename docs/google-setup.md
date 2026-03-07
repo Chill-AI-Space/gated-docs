@@ -265,6 +265,12 @@ node --experimental-strip-types bin/gated-info.ts auth google --service-account 
 **"Token expired" for Gmail** → OAuth consent screen is in "Testing" mode. Switch to Production:
 [OAuth consent screen](https://console.cloud.google.com/apis/credentials/consent) → **Publish App**
 
+**"Key creation is not allowed"** → Organization policy blocks SA key creation. If you manage the org:
+```bash
+gcloud resource-manager org-policies delete iam.disableServiceAccountKeyCreation --project=YOUR_PROJECT_ID
+```
+Or via Console: [Org Policies](https://console.cloud.google.com/iam-admin/orgpolicies) → find `iam.disableServiceAccountKeyCreation` → Edit → Not enforced. You can re-enable it after downloading the key.
+
 **BigQuery "Access Denied"** → SA needs roles at project level:
 ```bash
 gcloud projects add-iam-policy-binding YOUR_PROJECT_ID --member="serviceAccount:gated-info@YOUR_PROJECT_ID.iam.gserviceaccount.com" --role="roles/bigquery.user"

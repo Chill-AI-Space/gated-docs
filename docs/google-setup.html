@@ -450,6 +450,12 @@
 </div>
 
 <div class="callout warn">
+  <strong>"Key creation is not allowed"</strong> &mdash; Organization policy blocks SA key creation. If you manage the org:
+</div>
+<div class="cmd"><span>gcloud resource-manager org-policies delete iam.disableServiceAccountKeyCreation --project=YOUR_PROJECT_ID</span><button class="copy-btn" onclick="copyCmd(this)">Copy</button></div>
+<p style="color:var(--text-dim)">Or via Console: <a href="https://console.cloud.google.com/iam-admin/orgpolicies" target="_blank">Org Policies</a> &rarr; find <code>iam.disableServiceAccountKeyCreation</code> &rarr; Not enforced. Re-enable after downloading the key.</p>
+
+<div class="callout warn">
   <strong>BigQuery "Access Denied"</strong> &mdash; SA needs roles at project level. See <a href="#step-3">Step 3: BigQuery</a>.
 </div>
 
