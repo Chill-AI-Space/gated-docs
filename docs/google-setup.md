@@ -55,8 +55,7 @@ A service account is a "robot user" — it has an email address and can be given
 # Create service account
 gcloud iam service-accounts create gated-info \
   --display-name="gated-info MCP" \
-  --project=YOUR_PROJECT_ID
-
+ 
 # Download key
 gcloud iam service-accounts keys create ~/Downloads/gated-info-key.json \
   --iam-account=gated-info@YOUR_PROJECT_ID.iam.gserviceaccount.com
@@ -71,19 +70,13 @@ Enable only the APIs you need. Each API is a toggle — turn on what you want.
 **Option A: Via CLI**
 ```bash
 # Core (most people need these)
-gcloud services enable drive.googleapis.com --project=YOUR_PROJECT_ID
-gcloud services enable sheets.googleapis.com --project=YOUR_PROJECT_ID
-gcloud services enable docs.googleapis.com --project=YOUR_PROJECT_ID
-
+gcloud services enable drive.googleapis.comgcloud services enable sheets.googleapis.comgcloud services enable docs.googleapis.com
 # BigQuery
-gcloud services enable bigquery.googleapis.com --project=YOUR_PROJECT_ID
-
+gcloud services enable bigquery.googleapis.com
 # Gmail (requires OAuth — see Gmail section below)
-gcloud services enable gmail.googleapis.com --project=YOUR_PROJECT_ID
-
+gcloud services enable gmail.googleapis.com
 # Calendar
-gcloud services enable calendar-json.googleapis.com --project=YOUR_PROJECT_ID
-```
+gcloud services enable calendar-json.googleapis.com```
 
 **Option B: Via Console**
 1. Open [APIs & Services → Library](https://console.cloud.google.com/apis/library)

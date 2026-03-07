@@ -266,8 +266,7 @@
 <div class="code-block"><pre><span class="c"># Create service account</span>
 gcloud iam service-accounts create gated-info \
   --display-name=<span class="v">"gated-info MCP"</span> \
-  --project=YOUR_PROJECT_ID
-
+ 
 <span class="c"># Download key</span>
 gcloud iam service-accounts keys create ~/Downloads/gated-info-key.json \
   --iam-account=gated-info@YOUR_PROJECT_ID.iam.gserviceaccount.com</pre><button class="copy-btn" onclick="copyBlock(this)">Copy</button></div>
@@ -284,18 +283,18 @@ gcloud iam service-accounts keys create ~/Downloads/gated-info-key.json \
 <h4>Option A: Via CLI</h4>
 
 <p><strong>Core (Drive / Sheets / Docs):</strong></p>
-<div class="cmd"><span>gcloud services enable drive.googleapis.com --project=YOUR_PROJECT_ID</span><button class="copy-btn" onclick="copyCmd(this)">Copy</button></div>
-<div class="cmd"><span>gcloud services enable sheets.googleapis.com --project=YOUR_PROJECT_ID</span><button class="copy-btn" onclick="copyCmd(this)">Copy</button></div>
-<div class="cmd"><span>gcloud services enable docs.googleapis.com --project=YOUR_PROJECT_ID</span><button class="copy-btn" onclick="copyCmd(this)">Copy</button></div>
+<div class="cmd"><span>gcloud services enable drive.googleapis.com</span><button class="copy-btn" onclick="copyCmd(this)">Copy</button></div>
+<div class="cmd"><span>gcloud services enable sheets.googleapis.com</span><button class="copy-btn" onclick="copyCmd(this)">Copy</button></div>
+<div class="cmd"><span>gcloud services enable docs.googleapis.com</span><button class="copy-btn" onclick="copyCmd(this)">Copy</button></div>
 
 <p><strong>BigQuery:</strong></p>
-<div class="cmd"><span>gcloud services enable bigquery.googleapis.com --project=YOUR_PROJECT_ID</span><button class="copy-btn" onclick="copyCmd(this)">Copy</button></div>
+<div class="cmd"><span>gcloud services enable bigquery.googleapis.com</span><button class="copy-btn" onclick="copyCmd(this)">Copy</button></div>
 
 <p><strong>Gmail</strong> (requires OAuth &mdash; see <a href="#gmail">Gmail section</a>):</p>
-<div class="cmd"><span>gcloud services enable gmail.googleapis.com --project=YOUR_PROJECT_ID</span><button class="copy-btn" onclick="copyCmd(this)">Copy</button></div>
+<div class="cmd"><span>gcloud services enable gmail.googleapis.com</span><button class="copy-btn" onclick="copyCmd(this)">Copy</button></div>
 
 <p><strong>Calendar:</strong></p>
-<div class="cmd"><span>gcloud services enable calendar-json.googleapis.com --project=YOUR_PROJECT_ID</span><button class="copy-btn" onclick="copyCmd(this)">Copy</button></div>
+<div class="cmd"><span>gcloud services enable calendar-json.googleapis.com</span><button class="copy-btn" onclick="copyCmd(this)">Copy</button></div>
 
 <h4>Option B: Via Console</h4>
 <ol>
