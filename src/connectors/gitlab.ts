@@ -314,20 +314,45 @@ async function readMergeRequest(rest: string): Promise<DocContent> {
     lines.push(mr.description);
   }
 
-  // Discussion / comments
+  // Discussions — includes inline code comments with file/line context
   try {
-    const notes = await glGet(`/projects/${projectId}/merge_requests/${iid}/notes`, {
-      per_page: '50',
-      sort: 'asc',
+    const discussions = await glGet(`/projects/${projectId}/merge_requests/${iid}/discussions`, {
+      per_page: '100',
     });
-    const humanNotes = notes.filter((n: any) => !n.system);
-    if (humanNotes.length) {
+
+    const reviewDiscussions = discussions.filter((d: any) =>
+      d.notes?.some((n: any) => !n.system && n.author?.username !== mr.author?.username)
+    );
+
+    if (reviewDiscussions.length) {
       lines.push('');
-      lines.push(`## Comments (${humanNotes.length})`);
-      for (const note of humanNotes) {
+      lines.push(`## Review comments (${reviewDiscussions.length} threads)`);
+
+      for (const disc of reviewDiscussions) {
+        const notes = (disc.notes || []).filter((n: any) => !n.system);
+        if (notes.length === 0) continue;
+
+        const firstNote = notes[0];
         lines.push('');
-        lines.push(`**${note.author?.username || 'unknown'}** (${note.created_at?.slice(0, 16)}):`);
-        lines.push(note.body);
+
+        // Show file/line context for inline comments
+        if (firstNote.position) {
+          const pos = firstNote.position;
+          const file = pos.new_path || pos.old_path || '';
+          const line = pos.new_line || pos.old_line || '';
+          const resolved = disc.resolved ? ' [RESOLVED]' : ' [OPEN]';
+          lines.push(`### ${file}:${line}${resolved}`);
+        } else {
+          // General discussion (not attached to a line)
+          const resolved = disc.resolved ? ' [RESOLVED]' : disc.resolved === false ? ' [OPEN]' : '';
+          lines.push(`### General comment${resolved}`);
+        }
+
+        for (const note of notes) {
+          lines.push(`**${note.author?.username || 'unknown'}** (${note.created_at?.slice(0, 16)}):`);
+          lines.push(note.body);
+          lines.push('');
+        }
       }
     }
   } catch {}
